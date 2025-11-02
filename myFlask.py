@@ -5,20 +5,22 @@ import markdown
 app = Flask(__name__)
 app.secret_key = "Devin_DevCrish"
 
-Messages = list()
+
 
 @app.route('/', methods=['POST', 'GET'])
 def chat():
+    if "Messages" not in session:
+        session["Messages"] = []
     if request.method == 'POST':
         user_input = request.form['user_input']
-        Messages.append({"role":"user", "parts":[{"text":user_input}]})
-        Bot_response = Gemini(Messages)
+        session["Messages"].append({"role":"user", "parts":[{"text":user_input}]})
+        Bot_response = Gemini(session["Messages"])
         # 🟢 CONVERT MARKDOWN TO HTML HERE 🟢
         Bot_response_html = markdown.markdown(Bot_response)
-        Messages.append({"role":"model", "parts":[{"text":Bot_response_html}]})
-        print(Messages)
+        session["Messages"].append({"role":"model", "parts":[{"text":Bot_response_html}]})
+        print(session["Messages"])
         print("\n")
-        return render_template("index.html", messages=Messages)
-    return render_template("index.html", messages=Messages) 
+        return render_template("index.html", messages=session["Messages"])
+    return render_template("index.html", messages=session["Messages"]) 
 
 app.run(debug=True)
