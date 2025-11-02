@@ -152,7 +152,7 @@
   <div class="chat-container">
     <header>Health Chat Bot</header>
 
-    <div class="chat-box">
+    <div class="chat-box" id="chat-history-box">
     {% for msg in messages %}
       <div class="message {{ msg['role'] }}">
         {# This is the correct way to access the text from your Python structure #}
@@ -171,4 +171,22 @@
     </div>
   </div>
 </body>
+
+<script>
+    function scrollToBottom() {
+        // 1. Get the chat box element by its ID
+        const chatBox = document.getElementById('chat-history-box');
+        
+        // 2. Check if the element exists
+        if (chatBox) {
+            // 3. Scroll the element to its maximum scroll height
+            //    This effectively scrolls to the very bottom.
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    }
+
+    // Run the function as soon as the entire page finishes loading
+    window.onload = scrollToBottom;
+</script>
+
 </html>
