@@ -1,10 +1,11 @@
 from flask import Flask, render_template, session, request, url_for, redirect
 from myGemini import Gemini
+import markdown
 
 app = Flask(__name__)
 app.secret_key = "Devin_DevCrish"
 
-Messages = list({"role":"user", "parts":[{"text":"Hey Gemini, can you help my friend with something"}]})
+Messages = list()
 
 @app.route('/', methods=['POST', 'GET'])
 def chat():
@@ -12,7 +13,9 @@ def chat():
         user_input = request.form['user_input']
         Messages.append({"role":"user", "parts":[{"text":user_input}]})
         Bot_response = Gemini(Messages)
-        Messages.append({"role":"model", "parts":[{"text":Bot_response}]})
+        # 🟢 CONVERT MARKDOWN TO HTML HERE 🟢
+        Bot_response_html = markdown.markdown(Bot_response)
+        Messages.append({"role":"model", "parts":[{"text":Bot_response_html}]})
         print(Messages)
         print("\n")
         return render_template("index.html", messages=Messages)
