@@ -40,4 +40,5 @@ def chat():
         return render_template("index.html", messages=session["Messages"])
     return render_template("index.html", messages=session["Messages"]) 
 
+
 app.run(debug=True)
