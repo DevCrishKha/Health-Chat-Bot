@@ -1,11 +1,15 @@
 from flask import Flask, render_template, session, request, url_for, redirect
+from flask_session import Session
 from myGemini import Gemini
 import markdown
 
 app = Flask(__name__)
 app.secret_key = "Devin_DevCrish"
 
-
+# Server-side session (recommended)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_PERMANENT'] = True
+Session(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def chat():
@@ -37,6 +41,7 @@ def chat():
         session["Messages"].append({"role":"model", "parts":[{"text":Bot_response_html}]})
         print(session["Messages"])
         print("\n")
+        session.modified = True  # ensure session updates persist
         return render_template("index.html", messages=session["Messages"])
     return render_template("index.html", messages=session["Messages"]) 
 
