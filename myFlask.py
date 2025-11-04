@@ -1,9 +1,14 @@
 from flask import Flask, render_template, session, request, url_for, redirect
 from myGemini import Gemini
+from flask_session import Session
 import markdown
 
 app = Flask(__name__)
 app.secret_key = "Devin_DevCrish"
+
+Session["SESSION_TYPE"] = "filesystem"
+Session["SESSION_PERMANENT"] = True
+Session(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def chat():
