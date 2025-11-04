@@ -5,8 +5,6 @@ import markdown
 app = Flask(__name__)
 app.secret_key = "Devin_DevCrish"
 
-
-
 @app.route('/', methods=['POST', 'GET'])
 def chat():
     if "Messages" not in session:
